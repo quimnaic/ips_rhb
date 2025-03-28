@@ -11,11 +11,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/front",
             "index": "src/index.html",
-            "browser": "src/main.ts",
+            "main": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -27,14 +27,16 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+                "src/styles.css",
+                "node_modules/bootstrap/dist/css/bootstrap.min.css",
+                "src/dist/css/adminlte.min.css",
+                "src/dist/plugins/fontawesome-free/css/all.min.css"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "scripts": [
+                "src/dist/plugins/jquery/jquery.min.js",
+                "src/dist/plugins/bootstrap/js/bootstrap.bundle.min.js",
+                "src/dist/js/adminlte.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -97,5 +99,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "7f4bf71a-2c04-4838-82d2-4a556f88e76a"
   }
 }
