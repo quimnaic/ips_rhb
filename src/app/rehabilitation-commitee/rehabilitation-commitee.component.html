@@ -1,0 +1,1093 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <p class="card-title">Informacion del Paciente</p>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <table class="table">
+                        <tr>
+                            <th>Nombre</th>
+                            <td>{{patientData.first_name}}</td>
+                            <th>Apellido</th>
+                            <td>{{patientData.last_name}}</td>
+                            <th>Tipo Documento</th>
+                            <td>{{patientData.document_type.name}}</td>
+                            <th>Identificacion</th>
+                            <td>{{patientData.document_number}}</td>
+                        </tr>
+                        <tr>
+                            <th>Edad</th>
+                            <td>{{patientData.age}}</td>
+                            <th>Compania</th>
+                            <td>{{patientData.company_id}}</td>
+                            <th>Fecha Siniestro</th>
+                            <td>{{patientData.date_siniestro}}</td>
+                            <th>Siniestro</th>
+                            <td class="table-success">{{patientData.siniestro}}</td>
+                        </tr>
+                    </table>
+                </div>    
+            </div>
+        </div>       
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="citation-tab" data-toggle="pill" href="#citation" role="tab" aria-controls="citation" aria-selected="true">Citacion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home" aria-selected="false">Evaluacion RHB</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-act-tab" data-toggle="pill" href="#custom-tabs-four-act" role="tab" aria-controls="custom-tabs-four-act" aria-selected="false">Actividades RHB</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-rmm-tab" data-toggle="pill" href="#custom-tabs-four-rmm" role="tab" aria-controls="custom-tabs-four-rmm" aria-selected="false">Recomendaciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-voy-tab" data-toggle="pill" href="#custom-tabs-four-voy" role="tab" aria-controls="custom-tabs-four-voy" aria-selected="false">Formato VOY</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="citation" role="tabpanel" aria-labelledby="citation-tab">
+                        <div class="row d-flex justify-content-start">
+                            <div class="col-sm-12">
+                                <div class="from-group">
+                                    <a (click)="openModalCitation()" class="btn btn-sm btn-info" [class.disabled]="citations.length > 0" [attr.aria-disabled]="citations.length > 0">
+                                        <i class="fas fa-plus"></i>&nbsp;Generar Citacion
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <table class="table" *ngIf="citations && citations.length > 0; else noData">
+                                        <thead>
+                                            <th>Dia</th>
+                                            <th>Hora</th>
+                                            <th>Lugar</th>
+                                            <th>Telefono</th>
+                                            <th>Descargar</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let citation of citations">
+                                                <td>{{citation.day}}</td>
+                                                <td>{{citation.hour}}</td>
+                                                <td>{{citation.site}}</td>
+                                                <td>{{citation.phone}}</td>
+                                                <td><button class="btn btn-sm btn-default" (click)="onDownload(citation.patient_id)">
+                                                    <i class="fa fa-download"></i>
+                                                </button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <ng-template #noData>
+                                        <p class="no-data-message">No hay datos para mostrar.</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                    <div class="tab-pane fade" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <form [formGroup]="rhbForm" (ngSubmit)="onSubmit()">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label>Valoración Fisiatra</label>
+                                            <textarea formControlName="physiatrist_assessment" class="form-control"></textarea>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <label>Valoración Terapia Física</label>
+                                            <textarea formControlName="physical_therapy_assessment" class="form-control"></textarea>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <label>Valoración Terapia Ocupacional</label>
+                                            <textarea formControlName="occupational_therapy_assessment" class="form-control"></textarea>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <label>Diagnóstico</label>
+                                            <textarea formControlName="diagnosis" class="form-control"></textarea>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <label>Conclusiones</label>
+                                            <textarea formControlName="conclusions" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Pronóstico funcional:</label>
+                                            <select formControlName="functional_prognosis" class="form-control">
+                                                <option value="good">Bueno</option>
+                                                <option value="moderate">Moderado</option>
+                                                <option value="poor">Malo</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>Pronóstico operacional:</label>
+                                            <select formControlName="operational_prognosis" class="form-control">
+                                                <option value="return_to_work">Regreso al trabajo</option>
+                                                <option value="limited_duties">Tareas limitadas</option>
+                                                <option value="unable_to_work">No apto</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <label>Procedimientos Previos al Comité de Rehabilitación</label>
+                                            <textarea formControlName="pre_committee_procedures" class="form-control"></textarea>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <label>Plan de Readaptación Integral</label>
+                                            <textarea formControlName="integral_readaptation_plan" class="form-control"></textarea>
+                                        </div>
+                                    </div>                        
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label for="">Observaciones del equipo de RHI</label>
+                                            <textarea formControlName="obs_rhb" class="form-control"></textarea>
+                                        </div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-12 d-flex justify-content-end">
+                                            <button type="submit" class="btn btn-sm btn-primary">
+                                                {{ isEditMode ? 'Actualizar' : 'Registrar' }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form> 
+                            </div>
+                        </div>
+                    </div>     
+                    <div class="tab-pane fade" id="custom-tabs-four-act" role="tabpanel" aria-labelledby="custom-tabs-four-act-tab">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <a (click)="openModal()" class="btn btn-sm btn-info" [class.disabled]="rhbCode" [attr.aria-disabled]="rhbCode">
+                                        <i class="fas fa-plus"></i>&nbsp;Agregar Plan
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <table class="table">
+                                        <thead>
+                                            <th>Especialidad</th>
+                                            <th>Actividad</th>
+                                            <th>Objetivo</th>
+                                            <th>Codigo</th>
+                                            <th>Responsable</th>
+                                            <th>Sesiones</th>
+                                            <th>Intensidad</th>
+                                            <th>Frecuencia</th>
+                                        </thead>
+                                        <tbody *ngFor="let act of actRhb">
+                                            <tr>
+                                                <td>Junta RHI</td>
+                                                <td>Paquete e RHI</td>
+                                                <td>N/A</td>
+                                                <td></td>
+                                                <td>N/A</td>
+                                                <td>1</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fisiatra</td>
+                                                <td>Consulta de primera vez </td>
+                                                <td>Valoración </td>
+                                                <td></td>
+                                                <td>Fisiatria</td>
+                                                <td>{{act.physiatry}}</td>
+                                                <td>30 minutos</td>
+                                                <td>N/A</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Terapia fisica</td>
+                                                <td>Tratamiento </td>
+                                                <td>Rehabilitación </td>
+                                                <td></td>
+                                                <td>Terapista físico </td>
+                                                <td>{{act.physical_therapy}}</td>
+                                                <td>45 minutos</td>
+                                                <td>Diaria</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Terapia Ocupacional SST</td>
+                                                <td>Tratamiento </td>
+                                                <td>Rehabilitación </td>
+                                                <td></td>
+                                                <td>Terapia Ocupacional</td>
+                                                <td>{{act.occupational_evaluation}}</td>
+                                                <td>45 minutos</td>
+                                                <td>3 veces por semana</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Terapia Ocupacional SST</td>
+                                                <td>Carta de recomendación</td>
+                                                <td>Reincorporacion Laboral</td>
+                                                <td></td>
+                                                <td>Terapia Ocupacional</td>
+                                                <td>{{act.occupational_therapy}}</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Terapia Ocupacional SST</td>
+                                                <td>Evaluacion de desempeno</td>
+                                                <td>Reincorporacion Laboral</td>
+                                                <td></td>
+                                                <td>Terapia Ocupacional</td>
+                                                <td></td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fisiatra</td>
+                                                <td>Control</td>
+                                                <td>Definir caso</td>
+                                                <td></td>
+                                                <td>Fisiatria</td>
+                                                <td></td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fisiatra T Ocupaciona, T fisico y Psicologia</td>
+                                                <td>Junta RHB</td>
+                                                <td>Definir caso</td>
+                                                <td></td>
+                                                <td>Fisiatria, T ocupacional. T físico y Psicología<</td>
+                                                <td></td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fisiatria</td>
+                                                <td>Cierre de caso</td>
+                                                <td>Cierre de caso</td>
+                                                <td></td>
+                                                <td>Fisiatria</td>
+                                                <td></td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Psicologia</td>
+                                                <td>Consulta de primera vez y control de cierre</td>
+                                                <td>Valoracion</td>
+                                                <td></td>
+                                                <td>Psicologo</td>
+                                                <td>{{act.psychology}}</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-sm-12 d-flex justify-content-end">
+                                    <div class="form-group">
+                                        <button class="btn btn-sm btn-primary" (click)="onActSave()">Guardar</button>
+                                        <a  class="btn btn-sm btn-default" (click)="onRhb()">
+                                            Generar PDF
+                                        </a>                 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                    <div class="tab-pane fade" id="custom-tabs-four-rmm" role="tabpanel" aria-labelledby="custom-tabs-four-rmm-tab">
+                        <form [formGroup]="obsForm" (ngSubmit)="openRecommendation()">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="">Segmento lesionado</label>
+                                        <input type="text" formControlName="injured_segment" id="" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="">Tiempo de vigencia de las recomendaciones</label>
+                                        <input type="text" formControlName="recommendation_duration" id="" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="">Incapacitado</label>
+                                        <input type="text" formControlName="is_disabled" id="" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="">Forma de reintegro laboral</label>
+                                        <input type="text" formControlName="return_to_work" id="" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="">Concepto</label>
+                                        <input type="text" formControlName="concept" id="" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="">Observaciones</label>
+                                        <textarea formControlName="observation" class="form-control" id="" cols="30" rows="10"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input type="file" (change)="onFileSelected($event, 'imagen1')"  id="" class="form-control" accept="image/*">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input type="file"  (change)="onFileSelected($event, 'imagen2')"  id="" class="form-control" accept="image/*">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input type="file" (change)="onFileSelected($event, 'imagen3')"  class="form-control" accept="image/*">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="">Tiempo de recomendación para implemntacion</label>
+                                        <input type="text" formControlName="time" id="" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 d-flex justify-content-end">
+                                    <div class="form-group">
+                                        <a (click)="onRecommendationPdf()" class="btn btn-sm btn-info">Generar PDF</a>
+                                        <button type="submit" class="btn btn-sm btn-primary">
+                                            Guardar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div> 
+                    <div class="tab-pane fade" id="custom-tabs-four-voy" role="tabpanel" aria-labelledby="custom-tabs-four-voy-tab">
+                        <div class="row">
+                            <form [formGroup]="voyForm" (ngSubmit)="createVoy()">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <table class="table">
+                                                <tr>
+                                                    <td rowspan="3"><label>Nivel educativo</label></td>
+                                                    <td>
+                                                        <label>Forma empirica</label>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" formControlName="empirical" id="" class="form-control">
+                                                    </td>
+                                                    <td><label>Basica primaria</label></td>
+                                                    <td>
+                                                        <input type="text" formControlName="primary_school" id="" class="form-control">
+                                                    </td>
+                                                    <td><label>Bachillerato:</label></td>
+                                                    <td>
+                                                        <input type="text" fromControlName="high_school" id="" class="form-control">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label>Bachillerato: (Modalidad)</label></td>
+                                                    <td>
+                                                        <input type="text" formControlName="high_school_mod" id="" class="form-control">
+                                                    </td>
+                                                    <td><label>Tecnico / Tecnologo</label></td>
+                                                    <td>
+                                                        <input type="text" formControlName="technical" id="" class="form-control">
+                                                    </td>
+                                                    <td><label>Profesional</label></td>
+                                                    <td>
+                                                        <input type="text" formControlName="professional" id="" class="form-control">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label>Especificar formacion y oficios que conoce</label></td>
+                                                    <td colspan="5">
+                                                        <input type="text" formControlName="skills_experience" class="form-control">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="">Diagnóstico clínico por evento ATEL</label>
+                                            <textarea formControlName="clinical_diagnosis_by_event" cols="30" rows="4" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">Evento no laborales</label>
+                                            <input type="text" formControlName="non_work_related_event" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">EPS / IPS</label>
+                                            <input type="text" formControlName="eps_ips" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">AFP</label>
+                                            <input type="text" formControlName="afp" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">Tiempo total de incapacidad</label>
+                                            <input type="text" formControlName="total_disability_time" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">Vinculación Laboral</label>
+                                            <input type="text" formControlName="job_linkage" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">Forma de vinculación</label>
+                                            <input type="text" formControlName="type_of_linkage" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">Fecha de ingreso a la empresa / antigüedad en la empresa</label>
+                                            <input type="text" formControlName="company_start_date" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">Contacto en empresa / cargo</label>
+                                            <input type="text" formControlName="company_contact_position" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">Correo electrónico</label>
+                                            <input type="text" formControlName="email" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">Teléfono de contacto de la empresa</label>
+                                            <input type="text" formControlName="company_phone" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>                                  
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="">Objetivo de la valoracion</label>
+                                            <textarea formControlName="purpose" id="" cols="30" rows="4" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">Tareas y Operaciones</label>
+                                            <input type="text" formControlName="tasks_operations" id="" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">Forma de integracion laboral</label>
+                                            <input type="text" formControlName="job_integration_method" id="" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">Tiempo de ejecucion</label>
+                                            <input type="text" formControlName="execution_time" id="" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="">Componente del desempeno</label>
+                                            <textarea class="form-control" formControlName="performance_component" id="" cols="30" rows="4"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="">Tratamiento recibido por rehabilitacion</label>
+                                                <input type="text" formControlName="rehabilitation_treatment_received" id="" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="">Calificacion de PCL</label>
+                                                <input type="text" formControlName="pcl_rating" id="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-sm-12">
+                                        <div class="form-group" formArrayName="helps">
+                                          <label>Adaptaciones recibidas (medio ambiente laboral, hogar y/o del individuo)*</label><br>
+                                      
+                                          <div *ngFor="let help of helpsList; let i = index">
+                                            <label>
+                                              <input
+                                                type="checkbox"
+                                                [value]="help.value"
+                                                (change)="onHelpChange($event)"
+                                                [checked]="voyForm.get('helps')?.value.includes(help.value)"
+                                              />
+                                              {{ help.name }}
+                                            </label><br>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="familyCoreComposition">Composición del núcleo familiar</label>
+                                            <input type="text" formControlName="family_core_composition"  class="form-control">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="birthDatesOfFamily">Fecha de nacimiento de cada integrante de la familia</label>
+                                            <input type="text" formControlName="birth_dates_of_family"  class="form-control">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="householdProvider">Persona(s) que sostiene económicamente el hogar</label>
+                                            <input type="text" formControlName="household_provider"  class="form-control">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="averageHouseholdIncome">Ingreso Promedio en el hogar</label>
+                                            <input type="text" formControlName="average_household_income"  class="form-control">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="currentLivingArrangement">Convivencia actual</label>
+                                            <input type="text" formControlName="currentLiving_arrangement" id="currentLivingArrangement" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                <th>Actividad</th>
+                                                <th>No dificultad / No dependencia</th>
+                                                <th>Dificultad leve / No dependencia</th>
+                                                <th>Dificultad moderada / Dependencia moderada</th>
+                                                <th>Dificultad severa / Dependencia severa</th>
+                                                <th>Dificultad completa / Dependencia grave completa</th>
+                                                <th>Observacion</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                  <td>Lavarse</td>
+                                                  <td><input type="radio" formControlName="washing" value="no_difficulty"></td>
+                                                  <td><input type="radio" formControlName="washing" value="mild_difficulty"></td>
+                                                  <td><input type="radio" formControlName="washing" value="moderate_difficulty"></td>
+                                                  <td><input type="radio" formControlName="washing" value="severe_difficulty"></td>
+                                                  <td><input type="radio" formControlName="washing" value="complete_difficulty"></td>
+                                                  <td><input type="text" formControlName="washing_comment" id="" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                  <td>Cuidado de partes del cuerpo</td>
+                                                  <td><input type="radio" formControlName="body_care" value="no_difficulty"></td>
+                                                  <td><input type="radio" formControlName="body_care" value="mild_difficulty"></td>
+                                                  <td><input type="radio" formControlName="body_care" value="moderate_difficulty"></td>
+                                                  <td><input type="radio" formControlName="body_care" value="severe_difficulty"></td>
+                                                  <td><input type="radio" formControlName="body_care" value="complete_difficulty"></td>
+                                                  <td><input type="text" formControlName="body_care_comment" id="" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                  <td>Higiene personal (excretion processes)</td>
+                                                  <td><input type="radio" formControlName="hygiene" value="no_difficulty"></td>
+                                                  <td><input type="radio" formControlName="hygiene" value="mild_difficulty"></td>
+                                                  <td><input type="radio" formControlName="hygiene" value="moderate_difficulty"></td>
+                                                  <td><input type="radio" formControlName="hygiene" value="severe_difficulty"></td>
+                                                  <td><input type="radio" formControlName="hygiene" value="complete_difficulty"></td>
+                                                  <td><input type="text" formControlName="hygiene_comment" id="" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                  <td>Vestirse</td>
+                                                  <td><input type="radio" formControlName="dressing" value="no_difficulty"></td>
+                                                  <td><input type="radio" formControlName="dressing" value="mild_difficulty"></td>
+                                                  <td><input type="radio" formControlName="dressing" value="moderate_difficulty"></td>
+                                                  <td><input type="radio" formControlName="dressing" value="severe_difficulty"></td>
+                                                  <td><input type="radio" formControlName="dressing" value="complete_difficulty"></td>
+                                                  <td><input type="text" formControlName="dressing_comment" id="" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                  <td>Quitarse la ropa</td>
+                                                  <td><input type="radio" formControlName="undressing" value="no_difficulty"></td>
+                                                  <td><input type="radio" formControlName="undressing" value="mild_difficulty"></td>
+                                                  <td><input type="radio" formControlName="undressing" value="moderate_difficulty"></td>
+                                                  <td><input type="radio" formControlName="undressing" value="severe_difficulty"></td>
+                                                  <td><input type="radio" formControlName="undressing" value="complete_difficulty"></td>
+                                                  <td><input type="text" formControlName="undressing_comment" id="" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                  <td>Ponerse calzado</td>
+                                                  <td><input type="radio" formControlName="shoes" value="no_difficulty"></td>
+                                                  <td><input type="radio" formControlName="shoes" value="mild_difficulty"></td>
+                                                  <td><input type="radio" formControlName="shoes" value="moderate_difficulty"></td>
+                                                  <td><input type="radio" formControlName="shoes" value="severe_difficulty"></td>
+                                                  <td><input type="radio" formControlName="shoes" value="complete_difficulty"></td>
+                                                  <td><input type="text" formControlName="shoes_comment" id="" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                  <td>Comer</td>
+                                                  <td><input type="radio" formControlName="eating" value="no_difficulty"></td>
+                                                  <td><input type="radio" formControlName="eating" value="mild_difficulty"></td>
+                                                  <td><input type="radio" formControlName="eating" value="moderate_difficulty"></td>
+                                                  <td><input type="radio" formControlName="eating" value="severe_difficulty"></td>
+                                                  <td><input type="radio" formControlName="eating" value="complete_difficulty"></td>
+                                                  <td><input type="text" formControlName="eating_comment" id="" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                  <td>Beber</td>
+                                                  <td><input type="radio" formControlName="drinking" value="no_difficulty"></td>
+                                                  <td><input type="radio" formControlName="drinking" value="mild_difficulty"></td>
+                                                  <td><input type="radio" formControlName="drinking" value="moderate_difficulty"></td>
+                                                  <td><input type="radio" formControlName="drinking" value="severe_difficulty"></td>
+                                                  <td><input type="radio" formControlName="drinking" value="complete_difficulty"></td>
+                                                  <td><input type="text" formControlName="drinking_comment" id="" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                  <td>Health self-care</td>
+                                                  <td><input type="radio" formControlName="health_care" value="no_difficulty"></td>
+                                                  <td><input type="radio" formControlName="health_care" value="mild_difficulty"></td>
+                                                  <td><input type="radio" formControlName="health_care" value="moderate_difficulty"></td>
+                                                  <td><input type="radio" formControlName="health_care" value="severe_difficulty"></td>
+                                                  <td><input type="radio" formControlName="health_care" value="complete_difficulty"></td>
+                                                  <td><input type="text" formControlName="health_care_comment" id="" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                  <td>Dieta y actividad fisica</td>
+                                                  <td><input type="radio" formControlName="diet_control" value="no_difficulty"></td>
+                                                  <td><input type="radio" formControlName="diet_control" value="mild_difficulty"></td>
+                                                  <td><input type="radio" formControlName="diet_control" value="moderate_difficulty"></td>
+                                                  <td><input type="radio" formControlName="diet_control" value="severe_difficulty"></td>
+                                                  <td><input type="radio" formControlName="diet_control" value="complete_difficulty"></td>
+                                                  <td><input type="text" formControlName="diet_control_comment" id="" class="form-control"></td>
+                                                </tr>
+                                                <!--Comunicacion-->
+                                                <tr>
+                                                    <td>Con recepción de mensajes verbales</td>
+                                                    <td><input type="radio" formControlName="verbal_message_reception" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="verbal_message_reception" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="verbal_message_reception" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="verbal_message_reception" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="verbal_message_reception" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="verbal_message_reception_comment" class="form-control"></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Con recepción de mensajes no verbales</td>
+                                                    <td><input type="radio" formControlName="nonverbal_message_reception" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="nonverbal_message_reception" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="nonverbal_message_reception" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="nonverbal_message_reception" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="nonverbal_message_reception" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="nonverbal_message_reception_comment" class="form-control"></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Con recepción de mensajes en lenguaje de signos</td>
+                                                    <td><input type="radio" formControlName="sign_language_reception" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="sign_language_reception" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="sign_language_reception" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="sign_language_reception" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="sign_language_reception" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="sign_language_reception_comment" class="form-control"></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Con recepción de mensajes escritos</td>
+                                                    <td><input type="radio" formControlName="written_message_reception" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="written_message_reception" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="written_message_reception" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="written_message_reception" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="written_message_reception" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="written_message_reception_comment" class="form-control"></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Habla</td>
+                                                    <td><input type="radio" formControlName="speech" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="speech" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="speech" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="speech" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="speech" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="speech_comment" class="form-control"></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Producción de mensajes no verbales</td>
+                                                    <td><input type="radio" formControlName="nonverbal_message_production" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="nonverbal_message_production" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="nonverbal_message_production" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="nonverbal_message_production" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="nonverbal_message_production" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="nonverbal_message_production_comment" class="form-control"></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Mensajes escritos</td>
+                                                    <td><input type="radio" formControlName="written_message_production" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="written_message_production" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="written_message_production" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="written_message_production" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="written_message_production" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="written_message_production_comment" class="form-control"></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Conversación</td>
+                                                    <td><input type="radio" formControlName="conversation" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="conversation" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="conversation" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="conversation" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="conversation" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="conversation_comment" class="form-control"></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Discusión</td>
+                                                    <td><input type="radio" formControlName="discussion" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="discussion" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="discussion" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="discussion" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="discussion" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="discussion_comment" class="form-control"></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Utilización de dispositivos y técnicas de comunicación</td>
+                                                    <td><input type="radio" formControlName="communication_devices_usage" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="communication_devices_usage" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="communication_devices_usage" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="communication_devices_usage" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="communication_devices_usage" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="communication_devices_usage_comment" class="form-control"></td>
+                                                  </tr>                                                  
+                                                <!--Movilidad-->
+                                                <tr>
+                                                    <td>Cambiar las posturas corporales básicas</td>
+                                                    <td><input type="radio" formControlName="changing_body_posture" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="changing_body_posture" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="changing_body_posture" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="changing_body_posture" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="changing_body_posture" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="changing_body_posture_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Mantener la posición del cuerpo</td>
+                                                    <td><input type="radio" formControlName="maintaining_body_position" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="maintaining_body_position" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="maintaining_body_position" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="maintaining_body_position" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="maintaining_body_position" value="complete_difficulty"></td>
+                                                    <td><input type="text" name="maintaining_body_position_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Levantar y llevar objetos</td>
+                                                    <td><input type="radio" formControlName="lifting_and_carrying" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="lifting_and_carrying" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="lifting_and_carrying" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="lifting_and_carrying" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="lifting_and_carrying" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="lifting_and_carrying_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Uso fino de la mano</td>
+                                                    <td><input type="radio" formControlName="fine_hand_use" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="fine_hand_use" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="fine_hand_use" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="fine_hand_use" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="fine_hand_use" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="fine_hand_use_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Uso de la mano y el brazo</td>
+                                                    <td><input type="radio" formControlName="hand_and_arm_use" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="hand_and_arm_use" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="hand_and_arm_use" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="hand_and_arm_use" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="hand_and_arm_use" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="hand_and_arm_use_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Andar y desplazarse por el entorno</td>
+                                                    <td><input type="radio" formControlName="walking_and_moving" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="walking_and_moving" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="walking_and_moving" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="walking_and_moving" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="walking_and_moving" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="walking_and_moving_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Desplazarse por distintos lugares</td>
+                                                    <td><input type="radio" formControlName="moving_around_different_places" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="moving_around_different_places" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="moving_around_different_places" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="moving_around_different_places" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="moving_around_different_places" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="moving_around_different_places_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Desplazarse utilizando algún tipo de equipo</td>
+                                                    <td><input type="radio" formControlName="moving_with_equipment" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="moving_with_equipment" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="moving_with_equipment" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="moving_with_equipment" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="moving_with_equipment" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="moving_with_equipment_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Utilizar transporte como pasajero</td>
+                                                    <td><input type="radio" formControlName="using_transport_as_passenger" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="using_transport_as_passenger" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="using_transport_as_passenger" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="using_transport_as_passenger" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="using_transport_as_passenger" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="using_transport_as_passenger_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Conducir</td>
+                                                    <td><input type="radio" formControlName="driving" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="driving" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="driving" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="driving" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="driving" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="driving_comment" class="form-control"></td>
+                                                </tr>
+                                                <!--Aprendizaje y aplicación del conocimiento/sensopercepción-->
+                                                <tr>
+                                                    <td>Mirar</td>
+                                                    <td><input type="radio" formControlName="see" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="see" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="see" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="see" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="see" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="see_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Escuchar</td>
+                                                    <td><input type="radio" formControlName="hear" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="hear" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="hear" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="hear" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="hear" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="hear_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Aprender a leer, escribir y calcular</td>
+                                                    <td><input type="radio" formControlName="learn_lwc" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="learn_lwc" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="learn_lwc" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="learn_lwc" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="learn_lwc" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="learn_lwc_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Aprender a calcular</td>
+                                                    <td><input type="radio" formControlName="learn_calc" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="learn_calc" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="learn_calc" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="learn_calc" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="learn_calc" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="learn_calc_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Pensar</td>
+                                                    <td><input type="radio" formControlName="think" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="think" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="think" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="think" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="think" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="think_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Leer</td>
+                                                    <td><input type="radio" formControlName="read" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="read" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="read" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="read" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="read" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="read_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Escribir</td>
+                                                    <td><input type="radio" formControlName="write" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="write" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="write" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="write" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="write" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="write_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Calcular</td>
+                                                    <td><input type="radio" formControlName="calculate" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="calculate" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="calculate" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="calculate" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="calculate" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="calculate_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Resolver problemas y tomar decisiones</td>
+                                                    <td><input type="radio" formControlName="problem_solving" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="problem_solving" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="problem_solving" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="problem_solving" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="problem_solving" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="problem_solving_comment" class="form-control"></td>
+                                                </tr>                                                
+                                                <!--Vida domestica-->
+                                                <tr>
+                                                    <td>Adquisición de un lugar para vivir</td>
+                                                    <td><input type="radio" formControlName="acquisition_living_place" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="acquisition_living_place" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="acquisition_living_place" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="acquisition_living_place" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="acquisition_living_place" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="acquisition_living_place_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Adquisición de bienes y servicios</td>
+                                                    <td><input type="radio" formControlName="acquisition_goods_services" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="acquisition_goods_services" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="acquisition_goods_services" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="acquisition_goods_services" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="acquisition_goods_services" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlNam="acquisition_goods_services_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Preparar comidas</td>
+                                                    <td><input type="radio" formControlName="preparing_meals" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="preparing_meals" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="preparing_meals" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="preparing_meals" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="preparing_meals" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="preparing_meals_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Realizar quehaceres de la casa</td>
+                                                    <td><input type="radio" formControlName="doing_housework" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="doing_housework" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="doing_housework" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="doing_housework" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="doing_housework" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="doing_housework_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Limpieza de la vivienda</td>
+                                                    <td><input type="radio" formControlName="cleaning_home" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="cleaning_home" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="cleaning_home" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="cleaning_home" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="cleaning_home" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="cleaning_home_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Cuidado de los objetos del hogar</td>
+                                                    <td><input type="radio" formControlName="caring_house_objects" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="caring_house_objects" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="caring_house_objects" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="caring_house_objects" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="caring_house_objects" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="caring_house_objects_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Ayudas a los demás</td>
+                                                    <td><input type="radio" formControlName="helping_others" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="helping_others" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="helping_others" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="helping_others" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="helping_others" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="helping_others_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Mantenimiento de los dispositivos de ayuda</td>
+                                                    <td><input type="radio" formControlName="maintaining_assistive_devices" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="maintaining_assistive_devices" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="maintaining_assistive_devices" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="maintaining_assistive_devices" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="maintaining_assistive_devices" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="maintaining_assistive_devices_comment" class="form-control"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Cuidado de los animales</td>
+                                                    <td><input type="radio" formControlName="caring_animals" value="no_difficulty"></td>
+                                                    <td><input type="radio" formControlName="caring_animals" value="mild_difficulty"></td>
+                                                    <td><input type="radio" formControlName="caring_animals" value="moderate_difficulty"></td>
+                                                    <td><input type="radio" formControlName="caring_animals" value="severe_difficulty"></td>
+                                                    <td><input type="radio" formControlName="caring_animals" value="complete_difficulty"></td>
+                                                    <td><input type="text" formControlName="caring_animals_comment" class="form-control"></td>
+                                                </tr>                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="">Concepto Ocupacional</label>
+                                            <textarea formControlName="occupational_concept" class="form-control" id="" cols="30" rows="4"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Orientacion Ocupacional</label>
+                                            <textarea formControlName="occupational_guidance" id="" cols="30" rows="4" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-sm btn-primary">
+                                                {{ isEditVoyMode ? 'Actualizar' : 'Registrar' }}
+                                            </button>
+                                            <a (click)="openVoy()" class="btn btn-sm btn-default">Generar Pdf</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-add-activities (updateParent)="actUpdate($event)"></app-add-activities>
+<app-citation (updateParent)="data()" [patient]="{first_name: patientData.first_name, last_name: patientData.last_name , phone: patientData.phone, document_number: patientData.document_number, id: patientData.id }"></app-citation>

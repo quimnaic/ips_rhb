@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>CALLCENTER</title>
+  <title>IPS</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -12,36 +12,4 @@
 <body class="sidebar-mini sidebar-closed layout-fixed sidebar-collapse">
   <app-root></app-root>
 </body>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const phrases = [
-        "Bienvenido",
-        "Innovación en Contact Centers",
-        "Soluciones Empresariales",
-        "Atención al Cliente de Calidad",
-        "Optimización de Procesos",
-        "Conectando Empresas y Clientes",
-        "Somos #CreaSolucionex"
-    ];
-
-    let index = 0;
-    const textElement = document.getElementById("dynamicText");
-
-    if (textElement) {
-        function changeText() {
-            textElement.style.opacity = 0; // Efecto de desaparición
-            setTimeout(() => {
-                textElement.textContent = phrases[index];
-                textElement.style.opacity = 1; // Efecto de aparición
-                index = (index + 1) % phrases.length;
-            }, 500);
-        }
-
-        setInterval(changeText, 3000); // Cambia el texto cada 3 segundos
-        changeText(); // Muestra el primer texto inmediatamente
-    } else {
-        console.error("No se encontró el elemento con id 'dynamicText'");
-    }
-});
-</script>
 </html>

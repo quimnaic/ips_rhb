@@ -18,7 +18,7 @@ html, body {
 
 .content-wrapper {
     flex: 1;
-    min-height: 106vh!important;
+    min-height: 90vh!important;
 }
 
 .spinner-overlay {
@@ -63,3 +63,4 @@ html, body {
     justify-content: center;
     min-height: 100vh; /* Ocupa toda la altura de la ventana */
   }
+

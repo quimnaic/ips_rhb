@@ -1,18 +1,35 @@
-<ng-container >
+<ng-container *ngIf="patientTable == true">
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
+                <div class="card-header">
+                    <button class="btn btn-sm btn-default" (click)="onCreate()">Crear Paciente</button>
+                </div>
                 <div class="card-body">
                     <table class="table">
                         <thead>
-                            <th>Id</th>
+                            <th>Siniestro</th>
+                            <th>Fecha del Siniestro</th>
                             <th>Nombre</th>
+                            <th>Tipo de Documento</th>
                             <th>Identificacion</th>
-                            <th>Empresa</th>
                             <th>Acciones</th>
                         </thead>
                         <tbody>
-                            <tr></tr>
+                            <tr *ngFor="let patient of patients">
+                                <td>{{ patient.siniestro }}</td>
+                                <td>{{ patient.date_siniestro }}</td>
+                                <td>{{ patient.first_name + patient.last_name  }}</td>
+                                <td>{{ patient.document_type.name }}</td>
+                                <td>{{ patient.document_number }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" (click)="onHistory(patient)" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Ver Historico">
+                                            <i class="fa fa-arrow-right"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -20,21 +37,113 @@
         </div>
     </div>
 </ng-container>
-<ng-container >
+<ng-container *ngIf="patientDetail == true && patientTable == false" >
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="">
-                        <div class="col-4"></div>
-                        <div class="col-4"></div>
-                        <div class="col-4"></div>
-                        <div class="col-4"></div>
-                        <div class="col-4"></div>
-                        <div class="col-4"></div>
-                        <div class="col-4"></div>
-                        <div class="col-4"></div>
-                    </form>
+                    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="">Siniestro</label>
+                                <input type="text" formControlName="siniestro" class="form-control">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="">Fecha Siniestro</label>
+                                <input type="date" formControlName="date_siniestro" class="form-control">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Nombres</label>
+                                <input type="text" formControlName="first_name" class="form-control">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Apellidos</label>
+                                <input type="text" formControlName="last_name" class="form-control">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Tipo de Documento</label>
+                                <select formControlName="document_type_id" class="form-control">
+                                    <option *ngFor="let type of documentTypes" [value]="type.id">{{ type.name }}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Numero de Documento</label>
+                                <input type="text" formControlName="document_number" class="form-control">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Fecha de Nacimiento</label>
+                                <input type="date" formControlName="birth_date" class="form-control">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Edad</label>
+                                <input type="number" formControlName="age" class="form-control">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Genero</label>
+                                <select formControlName="gender_id" class="form-control">
+                                    <option *ngFor="let gender of genders" [value]="gender.id">{{ gender.name }}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Estado Civil</label>
+                                <select formControlName="marital_status_id" class="form-control">
+                                    <option *ngFor="let status of maritalStatuses" [value]="status.id">{{ status.name }}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Numero de hijos</label>
+                                <input type="text" formControlName="children" class="form-control">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Direccion</label>
+                                <input type="text" formControlName="address" class="form-control">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Telefono</label>
+                                <input type="tel" formControlName="phone" class="form-control">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Nombre del acompañante</label>
+                                <input type="text" formControlName="companion_name" class="form-control">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="">Empresa</label>
+                                <input type="text" formControlName="company_id" class="form-control">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="">Direccion Empresa</label>
+                                <input type="text" formControlName="address_company" class="form-control">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="">Telefono Empresa</label>
+                                <input type="text" formControlName="phone_company" class="form-control">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Dominancia</label>
+                                <select formControlName="dominance" class="form-control">
+                                    <option *ngFor="let position of positions" [value]="position.id">{{ position.name }}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Fecha Fin Incapacidad</label>
+                                <input type="date" formControlName="date_incapacity" class="form-control">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Fecha Comite RHI</label>
+                                <input type="date" formControlName="date_rhi" class="form-control">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="">Cargo</label>
+                                <input type="text" formControlName="position_id" class="form-control">
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-sm-12 d-flex justify-content-end">
+                                <button type="button" (click)="resetForm()" class="btn btn-sm btn-default">Volver</button>
+                                <button type="submit" class="btn btn-sm btn-primary">Crear</button>
+                            </div>
+                        </div>
+                    </form>        
                 </div>
             </div>
         </div>

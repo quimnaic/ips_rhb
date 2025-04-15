@@ -1,0 +1,24 @@
+<div class="modal fade" id="rehabModal" #rehabModal tabindex="-1" aria-labelledby="rehabModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <form [formGroup]="actForm" (ngSubmit)="onSubmit()">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="rehabModalLabel">Agregar/Editar Registro</h5>
+                  <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <div class="row">
+                      <div class="col-sm-12">
+                          <label class="form-label">Digita el número de Plan</label>
+                          <input type="text" class="form-control" formControlName="plan" required>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-sm btn-secondary" (click)="closeModal()">Cancelar</button>
+                  <button type="submit" class="btn btn-sm btn-primary">Guardar</button>
+              </div>
+          </div>
+      </form>
+  </div>
+</div>

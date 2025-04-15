@@ -1,0 +1,36 @@
+<div class="modal fade" id="citModal" tabindex="-1" aria-labelledby="citModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="rehabModalLabel">Agregar/Editar Registro</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form [formGroup]="citationForm" (ngSubmit)="onSubmit()">
+            <div class="modal-body">
+                <div class="row">
+                <div class="col-sm-12">
+                    <label class="form-label">Dia</label>
+                    <input type="date" class="form-control" formControlName="day" required>
+                </div>
+                <div class="col-sm-12">
+                    <label class="form-label">Hora</label>
+                    <input type="hour" class="form-control" formControlName="hour" required>
+                </div>
+                <div class="col-sm-12">
+                    <label class="form-label">Lugar</label>
+                    <input type="text" class="form-control" formControlName="site" required>
+                </div>
+                <div class="col-sm-12">
+                    <label class="form-label">Telefono</label>
+                    <input type="text" class="form-control" formControlName="phone" required>
+                </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Guardar</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <form [formGroup]="preEmploymentForm">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="patient_id">ID del Paciente</label>
+                            <input type="number" formControlName="patient_id" class="form-control" (input)="onSearchPatient()" id="patient_id">
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="patient_name">Nombre del Paciente</label>
+                            <input type="text" formControlName="patient_name" class="form-control" id="patient_name" readonly>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="fit_for_position">Apto para el Puesto</label>
+                            <select formControlName="fit_for_position" class="form-control">
+                                <option [value]="true">Sí</option>
+                                <option [value]="false">No</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="emphasis_concept">Concepto de Énfasis</label>
+                            <textarea formControlName="emphasis_concept" class="form-control"></textarea>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="complementary_exams">Exámenes Complementarios</label>
+                            <textarea formControlName="complementary_exams" class="form-control"></textarea>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="general_recommendations">Recomendaciones Generales</label>
+                            <textarea formControlName="general_recommendations" class="form-control"></textarea>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="preventive_occupational_recommendations">Recomendaciones Preventivas Ocupacionales</label>
+                            <textarea formControlName="preventive_occupational_recommendations" class="form-control"></textarea>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="worker_specific_recommendations">Recomendaciones Específicas para el Trabajador</label>
+                            <textarea formControlName="worker_specific_recommendations" class="form-control"></textarea>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="company_specific_recommendations">Recomendaciones Específicas de la Empresa</label>
+                            <textarea formControlName="company_specific_recommendations" class="form-control"></textarea>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="epidemiological_surveillance_system">Sistema de Vigilancia Epidemiológica</label>
+                            <textarea formControlName="epidemiological_surveillance_system" class="form-control"></textarea>
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-sm-12 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">Registrar</button>
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+        </div>       
+    </div>
+</div>

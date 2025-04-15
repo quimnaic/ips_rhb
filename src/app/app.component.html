@@ -1,5 +1,5 @@
 <!-- Si el usuario está autenticado -->
-<ng-container *ngIf="isLoggedIn">
+<ng-container>
   <div class="wrapper">
       <app-topnav></app-topnav>
       <app-sidenav></app-sidenav>
@@ -12,9 +12,4 @@
       </div>
       <app-footer></app-footer>
   </div>  
-</ng-container>
-
-<!-- Si el usuario NO está autenticado (solo muestra login) -->
-<ng-container *ngIf="!isLoggedIn">
-  <router-outlet></router-outlet>
 </ng-container>
