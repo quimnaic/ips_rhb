@@ -43,7 +43,7 @@ export class PatientsComponent implements OnInit {
             company_id: [''],
             address_company: [''],
             phone_company: [''],
-            dominance: ['', Validators.required],
+            dominance: [''],
             date_incapacity: [''],
             date_rhi: [''],
             position_id: ['']
