@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddActivitiesComponent } from "./add-activities/add-activities.component";
 import { RhbService } from '../rhb.service';
 import { CitationComponent } from './citation/citation.component';
@@ -275,6 +275,12 @@ export class RehabilitationCommiteeComponent  implements OnInit{
     this.voyForm.patchValue({
       ...data
     });
+    const helps = data.helps || [];
+
+    const helpsFormArray = this.voyForm.get('helps') as FormArray;
+    helps.forEach((value: string) => {
+      helpsFormArray.push(new FormControl(value));
+    });
   }
   
 
@@ -390,19 +396,23 @@ export class RehabilitationCommiteeComponent  implements OnInit{
   }
 
   onHelpChange(event: any) {
-    const helpsArray: FormArray = this.voyForm.get('helps') as FormArray;
+    const helpsArray = this.voyForm.get('helps') as FormArray;
+    const value = event.target.value;
   
     if (event.target.checked) {
-      helpsArray.push(this.fb.control(event.target.value));
+      helpsArray.push(new FormControl(value));
     } else {
-      const index = helpsArray.controls.findIndex(
-        x => x.value === event.target.value
-      );
-      if (index !== -1) {
+      const index = helpsArray.controls.findIndex(x => x.value === value);
+      if (index >= 0) {
         helpsArray.removeAt(index);
       }
     }
   }
+
+  isChecked(value: string): boolean {
+    const helpsArray = this.voyForm.get('helps') as FormArray;
+    return helpsArray.value.includes(value);
+  }  
 
   createVoy(){
     const formData = {

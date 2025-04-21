@@ -550,23 +550,17 @@
                                             </div>
                                         </div>
                                     </div>                                    
-                                    <div class="col-sm-12">
-                                        <div class="form-group" formArrayName="helps">
-                                          <label>Adaptaciones recibidas (medio ambiente laboral, hogar y/o del individuo)*</label><br>
-                                      
-                                          <div *ngFor="let help of helpsList; let i = index">
-                                            <label>
-                                              <input
-                                                type="checkbox"
-                                                [value]="help.value"
-                                                (change)="onHelpChange($event)"
-                                                [checked]="voyForm.get('helps')?.value.includes(help.value)"
-                                              />
-                                              {{ help.name }}
-                                            </label><br>
-                                          </div>
-                                        </div>
-                                    </div>
+                                    <div *ngFor="let help of helpsList">
+                                        <label>
+                                            <input
+                                            type="checkbox"
+                                            [value]="help.value"
+                                            (change)="onHelpChange($event)"
+                                            [checked]="isChecked(help.value)"
+                                          />
+                                          {{ help.name }}
+                                        </label><br />
+                                      </div>                                                                              
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-4">
