@@ -8,11 +8,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class RhbService {
 
   pdfCitation = 'http://186.117.135.117:8700/ips/public/api/rhb/citation';
+  noCitation = 'http://186.117.135.117:8700/ips/public/api/rhb/noCitation';
   citations = 'http://186.117.135.117:8700/ips/public/api/rhb/citation';
   pdfRecommendation = 'http://186.117.135.117:8700/ips/public/api/rhb/createRecommendation';
   pdfRecommendationPdf = 'http://186.117.135.117:8700/ips/public/api/rhb/createRecommendationPdf/';
   rhb = 'http://186.117.135.117:8700/ips/public/api/rhb';
   citationPdf = 'http://186.117.135.117:8700/ips/public/api/rhb/citationPdf';
+  noCitationPdf = 'http://186.117.135.117:8700/ips/public/api/rhb/noCitationPdf';
   rhbPdf = 'http://186.117.135.117:8700/ips/public/api/rhb/pdfRhb';
   voyPdf = 'http://186.117.135.117:8700/ips/public/api/rhb/pdfVoy';
   rhbAct = 'http://186.117.135.117:8700/ips/public/api/rhb/act/';
@@ -59,6 +61,10 @@ export class RhbService {
     return this.http.post(this.citationPdf, formData, { responseType: 'blob'});
   }
 
+  getNoCitationPdf(formData: any): Observable<Blob> {
+    return this.http.post(this.noCitationPdf, formData, { responseType: 'blob'});
+  }
+
   getRhbPdf(formData: any): Observable<Blob> {
     return this.http.post(this.rhbPdf, formData,{ responseType: 'blob'});
   }
@@ -93,5 +99,9 @@ export class RhbService {
 
   postRhbVoy(formData: any): Observable<any> {
     return this.http.post(this.rhbVoyUpdate, formData)
+  }
+
+  createNoCitation(formData: any): Observable<any> {
+    return this.http.post(this.noCitation, formData);
   }
 }

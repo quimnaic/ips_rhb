@@ -19,7 +19,7 @@
                             <tr *ngFor="let patient of patients">
                                 <td>{{ patient.siniestro }}</td>
                                 <td>{{ patient.date_siniestro }}</td>
-                                <td>{{ patient.first_name + patient.last_name  }}</td>
+                                <td>{{ patient.first_name }} {{ patient.last_name  }}</td>
                                 <td>{{ patient.document_type.name }}</td>
                                 <td>{{ patient.document_number }}</td>
                                 <td>
@@ -75,56 +75,14 @@
                                 <input type="date" formControlName="birth_date" class="form-control">
                             </div>
                             <div class="col-sm-3">
-                                <label for="">Edad</label>
-                                <input type="number" formControlName="age" class="form-control">
-                            </div>
-                            <div class="col-sm-3">
                                 <label for="">Genero</label>
                                 <select formControlName="gender_id" class="form-control">
                                     <option *ngFor="let gender of genders" [value]="gender.id">{{ gender.name }}</option>
                                 </select>
                             </div>
                             <div class="col-sm-3">
-                                <label for="">Estado Civil</label>
-                                <select formControlName="marital_status_id" class="form-control">
-                                    <option *ngFor="let status of maritalStatuses" [value]="status.id">{{ status.name }}</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <label for="">Numero de hijos</label>
-                                <input type="text" formControlName="children" class="form-control">
-                            </div>
-                            <div class="col-sm-3">
-                                <label for="">Direccion</label>
-                                <input type="text" formControlName="address" class="form-control">
-                            </div>
-                            <div class="col-sm-3">
-                                <label for="">Telefono</label>
-                                <input type="tel" formControlName="phone" class="form-control">
-                            </div>
-                            <div class="col-sm-3">
-                                <label for="">Nombre del acompañante</label>
-                                <input type="text" formControlName="companion_name" class="form-control">
-                            </div>
-                            <div class="col-sm-4">
                                 <label for="">Empresa</label>
                                 <input type="text" formControlName="company_id" class="form-control">
-                            </div>
-                            <div class="col-sm-4">
-                                <label for="">Direccion Empresa</label>
-                                <input type="text" formControlName="address_company" class="form-control">
-                            </div>
-                            <div class="col-sm-4">
-                                <label for="">Telefono Empresa</label>
-                                <input type="text" formControlName="phone_company" class="form-control">
-                            </div>
-                            <div class="col-sm-3">
-                                <label for="">Fecha Fin Incapacidad</label>
-                                <input type="date" formControlName="date_incapacity" class="form-control">
-                            </div>
-                            <div class="col-sm-3">
-                                <label for="">Fecha Comite RHI</label>
-                                <input type="date" formControlName="date_rhi" class="form-control">
                             </div>
                             <div class="col-sm-3">
                                 <label for="">Cargo</label>
@@ -132,7 +90,7 @@
                             </div>
                         </div><br>
                         <div class="row">
-                            <div class="col-sm-12 d-flex justify-content-end">
+                            <div class="col-sm-12 d-flex justify-content-end gap-1">
                                 <button type="button" (click)="resetForm()" class="btn btn-sm btn-default">Volver</button>
                                 <button type="submit" class="btn btn-sm btn-primary">Crear</button>
                             </div>

@@ -16,7 +16,6 @@ export class PatientsComponent implements OnInit {
 
     documentTypes: any[] = [];
     genders: any[] = [];
-    maritalStatuses: any[] = [];
     companies: any[] = [];
     positions: any[] = [];
     patients: any[] = [];
@@ -74,9 +73,7 @@ export class PatientsComponent implements OnInit {
             this.documentTypes = resdata;
         });
 
-        this.patientService.getMaritalStatues().subscribe(resdata => {
-            this.maritalStatuses = resdata;
-        });
+
     }
 
     private patientsAll() {

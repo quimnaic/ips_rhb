@@ -27,6 +27,10 @@ export class PatientService {
     return this.http.post<any>(this.listPatient, body)
   }
 
+  putPatients(formData: any, id: any): Observable<any> {
+    return this.http.put(this.listPatient + '/' + id, formData);
+  }
+
   //Get variables 
 
   getGender(): Observable<any> {
