@@ -25,19 +25,19 @@ export class PatientsComponent implements OnInit {
 
     constructor(private fb: FormBuilder, private patientService: PatientService, private rhbService: RhbService,  private router: Router) {
         this.patientForm = this.fb.group({
-            siniestro: ['', Validators.required], // Add Validators if needed
-            date_siniestro: ['', Validators.required],
-            first_name: ['', Validators.required],
-            last_name: ['', Validators.required],
-            document_type_id: [''],
-            document_number: ['', Validators.required],
-            birth_date: ['', Validators.required],
-            age: ['', Validators.required],
-            gender_id: ['', Validators.required],
-            marital_status_id: ['', Validators.required],
+            siniestro: [''], // Add Validators if needed
+            date_siniestro: [''],
+            first_name: [''],
+            last_name: [''],
+            document_type_id: [''], 
+            document_number: [''],
+            birth_date: [''],
+            age: [''],
+            gender_id: [''],
+            marital_status_id: [''],
             children: [''], // Or Validators.pattern if you expect a number
-            address: ['', Validators.required],
-            phone: ['', Validators.required],
+            address: [''],
+            phone: [''],
             companion_name: [''],
             company_id: [''],
             address_company: [''],
