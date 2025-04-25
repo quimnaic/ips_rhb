@@ -4,12 +4,14 @@ import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Va
 import { AddActivitiesComponent } from "./add-activities/add-activities.component";
 import { RhbService } from '../rhb.service';
 import { CitationComponent } from './citation/citation.component';
+import { PatientService } from '../patient.service';
+import { NoCitationComponent } from './no-citation/no-citation.component';
 
 declare var $: any;
 
 @Component({
   selector: 'app-rehabilitation-commitee',
-  imports: [ReactiveFormsModule, CommonModule, AddActivitiesComponent, CitationComponent],
+  imports: [ReactiveFormsModule, CommonModule, AddActivitiesComponent, CitationComponent, NoCitationComponent],
   templateUrl: './rehabilitation-commitee.component.html',
   styleUrl: './rehabilitation-commitee.component.css'
 })
@@ -17,6 +19,7 @@ export class RehabilitationCommiteeComponent  implements OnInit{
   rhbForm: FormGroup;
   voyForm: FormGroup;
   obsForm: FormGroup;
+  patientsForm: FormGroup;
   patientData: any;
   citations: any[] = [];
   activities: any[] = [];
@@ -27,6 +30,7 @@ export class RehabilitationCommiteeComponent  implements OnInit{
   rhbCode: any;
   imagenes: { [key: string]: File } = {};
   isEditVoyMode: boolean = false;
+  maritalStatuses: any[] = [];
 
   helpsList = [
     { name: 'Bastón', value: 'cane' },
@@ -38,9 +42,10 @@ export class RehabilitationCommiteeComponent  implements OnInit{
     { name: 'Bastón guía', value: 'guide_cane' },
     { name: 'Otros', value: 'others' }
   ];
+  selectedCitationId: any;
   
 
-  constructor(private rhbService: RhbService, private fb: FormBuilder) {
+  constructor(private rhbService: RhbService, private fb: FormBuilder, private patientService: PatientService) {
 
     this.voyForm = this.fb.group({
       empirical: [''],
@@ -201,6 +206,17 @@ export class RehabilitationCommiteeComponent  implements OnInit{
       return_to_work: [''],
       concept: ['']
     });
+
+    this.patientsForm = this.fb.group({
+      date_incapacity: [''],
+      date_rhi: [''],
+      marital_status_id: [''],
+      children: [''],
+      address: [''],
+      phone: [''],
+      companion_name: [''],
+      dominance: ['']
+    })
   }
 
   ngOnInit() {
@@ -210,9 +226,30 @@ export class RehabilitationCommiteeComponent  implements OnInit{
   data() {
     this.rhbService.currentPatient.subscribe(patient => {
       this.patientData = patient;
+      this.patientsForm.patchValue({
+        date_incapacity: this.patientData.date_incapacity,
+        date_rhi: this.patientData.date_rhi,
+        marital_status_id: this.patientData.marital_status_id,
+        children: this.patientData.children,
+        address: this.patientData.address,
+        phone: this.patientData.phone,
+        companion_name: this.patientData.companion_name,
+        dominance: this.patientData.dominance
+      })
       this.rhbUpdate(); // Obtener el paciente actualizado
     });
+
+    this.patientService.getMaritalStatues().subscribe(resdata => {
+      this.maritalStatuses = resdata;
+  });
   }  
+
+  onUpdate(){
+    const formData = {
+      ...this.patientsForm.value
+    }
+    this.patientService.putPatients(formData, this.patientData.id).subscribe();
+  }
 
   rhbUpdate() {
 
@@ -432,7 +469,6 @@ export class RehabilitationCommiteeComponent  implements OnInit{
   }
 
   onDownload(id: any){
-    console.log(id);
     const formData ={
       id: id
     }
@@ -441,6 +477,23 @@ export class RehabilitationCommiteeComponent  implements OnInit{
       const url = window.URL.createObjectURL(blob);
       window.open(url);
     });
+  }
+
+  onDownloadNo(id: any, patient_id: any){ 
+    const formData ={
+      id: id,
+      patientId: patient_id
+    }
+    this.rhbService.getNoCitationPdf(formData).subscribe((response: Blob) => {
+      const blob = new Blob([response], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url);
+    });
+  }
+
+  onNoCitation(id: any){
+    this.selectedCitationId = id;
+    $('#noCitiModal').modal('show');
   }
 
   onRhb() {

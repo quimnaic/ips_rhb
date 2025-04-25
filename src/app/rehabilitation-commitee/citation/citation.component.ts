@@ -45,10 +45,6 @@ export class CitationComponent {
       document_number: this.patient.document_number
     }
     this.rhbService.generatePdf(formData).subscribe((response: Blob) => {
-      const blob = new Blob([response], { type: 'application/pdf' });
-      const url = window.URL.createObjectURL(blob);
-      window.open(url);
-      this.updateMethod.emit();
       $('#citModal').modal('hide');
     });
   }

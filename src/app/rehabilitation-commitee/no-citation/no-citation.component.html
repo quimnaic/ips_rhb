@@ -1,0 +1,36 @@
+<div class="modal fade" id="noCitiModal" tabindex="-1" aria-labelledby="citModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="rehabModalLabel">Registar no asistencia</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onClose()"></button>
+        </div>
+        <form [formGroup]="noCitationForm" (ngSubmit)="onSubmit()">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="form-label">Terapia</label>
+                        <select formControlName="terapia" id="" class="form-control">
+                            <option value="">--Seleccione--</option>
+                            <option value="fisica">Fisica</option>
+                            <option value="ocupacional">Ocupacional</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12">
+                        <label class="form-label">Cancelacion</label>
+                        <select formControlName="cancelation" id="" class="form-control">
+                            <option value="">--Seleccione--</option>
+                            <option value="cancelacion">Cancelación</option>
+                            <option value="no_asistencia">No Asistencia</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" (click)="onClose()">Cancelar</button>
+            <button type="submit" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Guardar</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
