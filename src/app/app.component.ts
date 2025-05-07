@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { TopnavComponent } from './components/topnav/topnav.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { AuthService } from './auth.service';
 
 @Component({
     selector: 'app-root',
@@ -12,6 +13,19 @@ import { FooterComponent } from './components/footer/footer.component';
     styleUrl: './app.component.css'
 })
 export class AppComponent {
-  isLoggedIn = true; 
-  title = 'Front';
+  title = 'ips';
+  isLoggedIn = false; // Estado de autenticación
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    // Cargar estado desde localStorage
+    this.isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+    // Suscribirse a cambios en la autenticación
+    this.authService.isAuthenticated$.subscribe(status => {
+      console.log("Estado de autenticación cambiado:", status);
+      this.isLoggedIn = status;
+    });
+  }
 }

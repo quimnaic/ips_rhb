@@ -58,6 +58,12 @@
                                     </select>
                                 </td>
                             </tr>
+                            <tr>
+                                <th>Cargo</th>
+                                <td>
+                                    <input type="text" formControlName="position_id" class="form-control">
+                                </td>
+                            </tr>
                     </table>
                     <div class="col-sm-12 d-flex justify-content-end gap-1">
                         <button type="submit" class="btn btn-sm btn-primary">Actualizar</button>
@@ -288,6 +294,7 @@
                                                 <td>N/A</td>
                                                 <td>N/A</td>
                                             </tr>
+                                            <!--
                                             <tr>
                                                 <td>Terapia Ocupacional SST</td>
                                                 <td>Evaluacion de desempeno</td>
@@ -327,7 +334,7 @@
                                                 <td></td>
                                                 <td>N/A</td>
                                                 <td>N/A</td>
-                                            </tr>
+                                            </tr>-->
                                             <tr>
                                                 <td>Psicologia</td>
                                                 <td>Consulta de primera vez y control de cierre</td>
@@ -1131,5 +1138,5 @@
     </div>
 </div>
 <app-add-activities (updateParent)="actUpdate($event)"></app-add-activities>
-<app-no-citation [citationId]="selectedCitationId"></app-no-citation>
-<app-citation (updateParent)="data()" [patient]="{first_name: patientData.first_name, last_name: patientData.last_name , phone: patientData.phone, document_number: patientData.document_number, id: patientData.id }"></app-citation>
+<app-no-citation [citationId]="selectedCitationId" (updateMethod)="rhbUpdate()"></app-no-citation>
+<app-citation (updateMethod)="rhbUpdate()" [patient]="{first_name: patientData.first_name, last_name: patientData.last_name , phone: patientData.phone, document_number: patientData.document_number, id: patientData.id }"></app-citation>

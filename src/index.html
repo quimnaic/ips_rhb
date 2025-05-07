@@ -12,4 +12,36 @@
 <body class="sidebar-mini sidebar-closed layout-fixed sidebar-collapse">
   <app-root></app-root>
 </body>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const phrases = [
+    "Tu Salud, Nuestra Prioridad",
+    "Innovación al Servicio de tu Bienestar",
+    "Soluciones Integrales para tu Salud",
+    "Atención Médica con Calidez Humana",
+    "Optimizando la Salud para Ti",
+    "Conectando Pacientes con Bienestar",
+    "Somos #TuIPSDeConfianza"
+    ];
+
+    let index = 0;
+    const textElement = document.getElementById("dynamicText");
+
+    if (textElement) {
+        function changeText() {
+            textElement.style.opacity = 0; // Efecto de desaparición
+            setTimeout(() => {
+                textElement.textContent = phrases[index];
+                textElement.style.opacity = 1; // Efecto de aparición
+                index = (index + 1) % phrases.length;
+            }, 500);
+        }
+
+        setInterval(changeText, 3000); // Cambia el texto cada 3 segundos
+        changeText(); // Muestra el primer texto inmediatamente
+    } else {
+        console.error("No se encontró el elemento con id 'dynamicText'");
+    }
+});
+</script>
 </html>

@@ -1,0 +1,74 @@
+<ng-container *ngIf="userTable == true">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <button class="btn btn-sm btn-default" (click)="onCreate()">Crear Usuarios</button>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <th>Documento</th>
+                            <th>Nombre Completo</th>
+                            <th>Email</th>
+                            <th>Compañia</th>
+                            <th>Acciones</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of users">
+                                <td>{{user.document}}</td>
+                                <td>{{user.name}}</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.company}}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="userDetail == true && userTable == false" >
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="">Nombre completo</label>
+                                <input type="text" formControlName="name" class="form-control" placeholder="Ej: Pepito Perez">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="">Email</label>
+                                <input type="email" formControlName="email" class="form-control" placeholder="Ej: contoso@mail.com">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="">Documento</label>
+                                <input type="text" formControlName="document" class="form-control" placeholder="Ej: 1073700254">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="">Password</label>
+                                <input type="password" formControlName="password" class="form-control" placeholder="Password">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="">Compañia</label>
+                                <select formControlName="company" id="" class="form-control">
+                                    <option value="">--Seleccione--</option>
+                                    <option *ngFor="let company of companies" value="{{company.id}}">{{company.name}}</option>
+                                </select>
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-sm-12 d-flex justify-content-end gap-1">
+                                <button type="button" (click)="resetForm()" class="btn btn-sm btn-default">Volver</button>
+                                <button type="submit" class="btn btn-sm btn-primary">Crear</button>
+                            </div>
+                        </div>
+                    </form>        
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>

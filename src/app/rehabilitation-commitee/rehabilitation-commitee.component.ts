@@ -215,7 +215,8 @@ export class RehabilitationCommiteeComponent  implements OnInit{
       address: [''],
       phone: [''],
       companion_name: [''],
-      dominance: ['']
+      dominance: [''],
+      position_id: ['']
     })
   }
 
@@ -497,10 +498,12 @@ export class RehabilitationCommiteeComponent  implements OnInit{
   }
 
   onRhb() {
+    const company = localStorage.getItem('company');
     const data = {
       ...this.rhbFormValue,
       ...this.patientData,
-      ...this.actRhb[0]
+      ...this.actRhb[0],
+      company
     }
     console.log(data);
     this.rhbService.getRhbPdf(data).subscribe((response: Blob) => {

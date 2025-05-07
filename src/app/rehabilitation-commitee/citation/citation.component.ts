@@ -46,6 +46,7 @@ export class CitationComponent {
     }
     this.rhbService.generatePdf(formData).subscribe((response: Blob) => {
       $('#citModal').modal('hide');
+      this.updateMethod.emit();
     });
   }
 }

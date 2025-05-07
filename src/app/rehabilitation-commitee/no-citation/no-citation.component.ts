@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RhbService } from '../../rhb.service';
 
@@ -15,6 +15,7 @@ export class NoCitationComponent {
   noCitationForm: FormGroup;
 
   @Input() citationId!: any;
+  @Output() updateMethod = new EventEmitter<void>();
 
   constructor(private fb: FormBuilder, private apiService: RhbService) {
     this.noCitationForm = this.fb.group({
@@ -32,11 +33,13 @@ export class NoCitationComponent {
     this.apiService.createNoCitation(formData).subscribe( resdata => {
       if(resdata){
         $('#noCitiModal').modal('hide');
+        this.updateMethod.emit();
       }
     })
   }
 
   onClose(){
     $('#noCitiModal').modal('hide');
+    this.updateMethod.emit();
   }
 }
