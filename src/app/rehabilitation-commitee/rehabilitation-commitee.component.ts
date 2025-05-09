@@ -216,7 +216,9 @@ export class RehabilitationCommiteeComponent  implements OnInit{
       phone: [''],
       companion_name: [''],
       dominance: [''],
-      position_id: ['']
+      position_id: [''],
+      nit: [''],
+      address_company: ['']
     })
   }
 

@@ -9,6 +9,12 @@
                     <form [formGroup]="patientsForm" (ngSubmit)="onUpdate()">
                     <table class="table">
                         <tr>
+                            <th colspan="2">Fecha Siniestro</th>
+                            <td colspan="2">{{patientData.date_siniestro}}</td>
+                            <th colspan="2">Siniestro</th>
+                            <td colspan="2" class="table-success">{{patientData.siniestro}}</td>
+                        </tr>
+                        <tr>
                             <th>Nombre</th>
                             <td>{{patientData.first_name}}</td>
                             <th>Apellido</th>
@@ -19,14 +25,12 @@
                             <td>{{patientData.document_number}}</td>
                         </tr>
                         <tr>
-                            <th>Edad</th>
-                            <td>{{patientData.age}}</td>
+                            <th>Nit</th>
+                            <td><input type="text" formControlName="nit" id="" class="form-control"></td>
                             <th>Compania</th>
                             <td>{{patientData.company_id}}</td>
-                            <th>Fecha Siniestro</th>
-                            <td>{{patientData.date_siniestro}}</td>
-                            <th>Siniestro</th>
-                            <td class="table-success">{{patientData.siniestro}}</td>
+                            <th>Dirección Empresa</th>
+                            <td><input type="text" formControlName="address_company" class="form-control"></td>
                         </tr>
                             <tr>
                                 <th>Fecha Fin de la Incapacidad</th>
