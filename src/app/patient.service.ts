@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class PatientService {
 
-  listPatient = 'php artisan';
+  listPatient = 'http://186.117.135.117:8700/ips/public/api/patients';
 
   //Arrays variables
 

@@ -6,6 +6,7 @@
                     <button class="btn btn-sm btn-default" (click)="onCreate()">Crear Paciente</button>
                 </div>
                 <div class="card-body">
+                    <input type="text" class="form-control mb-3" placeholder="Buscar por Siniestro..." [(ngModel)]="search" (input)="filterCustomers()">
                     <table class="table">
                         <thead>
                             <th>Siniestro</th>
@@ -16,7 +17,7 @@
                             <th>Acciones</th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let patient of patients">
+                            <tr *ngFor="let patient of filteredPatients | paginate: { itemsPerPage: pageSize, currentPage: page }">
                                 <td>{{ patient.siniestro }}</td>
                                 <td>{{ patient.date_siniestro }}</td>
                                 <td>{{ patient.first_name }} {{ patient.last_name  }}</td>
@@ -32,6 +33,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
                 </div>
             </div>
         </div>

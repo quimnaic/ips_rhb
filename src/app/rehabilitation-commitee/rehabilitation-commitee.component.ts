@@ -6,6 +6,8 @@ import { RhbService } from '../rhb.service';
 import { CitationComponent } from './citation/citation.component';
 import { PatientService } from '../patient.service';
 import { NoCitationComponent } from './no-citation/no-citation.component';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 declare var $: any;
 
@@ -45,7 +47,7 @@ export class RehabilitationCommiteeComponent  implements OnInit{
   selectedCitationId: any;
   
 
-  constructor(private rhbService: RhbService, private fb: FormBuilder, private patientService: PatientService) {
+  constructor(private rhbService: RhbService, private fb: FormBuilder, private patientService: PatientService, private router: Router) {
 
     this.voyForm = this.fb.group({
       empirical: [''],
@@ -237,7 +239,10 @@ export class RehabilitationCommiteeComponent  implements OnInit{
         address: this.patientData.address,
         phone: this.patientData.phone,
         companion_name: this.patientData.companion_name,
-        dominance: this.patientData.dominance
+        dominance: this.patientData.dominancem,
+        nit: this.patientData.nit,
+        position_id: this.patientData.position_id,
+        address_company: this.patientData.address_company
       })
       this.rhbUpdate(); // Obtener el paciente actualizado
     });
@@ -251,7 +256,25 @@ export class RehabilitationCommiteeComponent  implements OnInit{
     const formData = {
       ...this.patientsForm.value
     }
-    this.patientService.putPatients(formData, this.patientData.id).subscribe();
+    this.patientService.putPatients(formData, this.patientData.id).subscribe(response => {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',  // 🔥 Se muestra arriba a la derecha
+        icon: 'success',
+        title: 'Archivo subido correctamente',
+        showConfirmButton: false,
+        timer: 3000  // ⏳ Se cierra automáticamente en 3 segundos
+      });
+    }, error => {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',  // 🔥 Se muestra arriba a la derecha
+        icon: 'error',
+        title: 'Archivo subido correctamente',
+        showConfirmButton: false,
+        timer: 3000  // ⏳ Se cierra automáticamente en 3 segundos
+      });
+    });
   }
 
   rhbUpdate() {
@@ -511,9 +534,26 @@ export class RehabilitationCommiteeComponent  implements OnInit{
     this.rhbService.getRhbPdf(data).subscribe((response: Blob) => {
       const blob = new Blob([response], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
+      Swal.fire({
+        toast: true,
+        position: 'top-end',  // 🔥 Se muestra arriba a la derecha
+        icon: 'success',
+        title: 'Archivo subido correctamente',
+        showConfirmButton: false,
+        timer: 3000  // ⏳ Se cierra automáticamente en 3 segundos
+      });
       window.open(url);
+    }, error => {
+      console.error('Error al subir el archivo', error);
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: 'Error al subir el archivo',
+        showConfirmButton: false,
+        timer: 3000
+      });
     });
-
   }
 
   onRecommendationPdf(){
@@ -522,6 +562,10 @@ export class RehabilitationCommiteeComponent  implements OnInit{
       const url = window.URL.createObjectURL(blob);
       window.open(url);
     });
+  }
+
+  resetForm(){
+    this.router.navigate(['/patients']);
   }
 
 }

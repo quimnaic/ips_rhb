@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PatientService } from '../patient.service';
 import { RhbService } from '../rhb.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
     selector: 'app-patients',
-    imports: [CommonModule,ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, NgxPaginationModule],
     templateUrl: './patients.component.html',
     styleUrl: './patients.component.css'
 })
@@ -19,7 +21,10 @@ export class PatientsComponent implements OnInit {
     companies: any[] = [];
     positions: any[] = [];
     patients: any[] = [];
-
+    search: string = ''; 
+    filteredPatients: any[] = []; 
+    page: number = 1; 
+    pageSize: number = 10;  
     patientTable = true;
     patientDetail = false;
 
@@ -79,6 +84,7 @@ export class PatientsComponent implements OnInit {
     private patientsAll() {
         this.patientService.getPatients().subscribe(resdata => {
             this.patients = resdata;
+            this.filteredPatients = this.patients;
         });
     }
 
@@ -115,7 +121,25 @@ export class PatientsComponent implements OnInit {
             this.patientService.storePatient(formData).subscribe(resdata => {
                 this.resetForm();
                 this.patientsAll();
-            });
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',  // 🔥 Se muestra arriba a la derecha
+                    icon: 'success',
+                    title: 'Archivo subido correctamente',
+                    showConfirmButton: false,
+                    timer: 3000  // ⏳ Se cierra automáticamente en 3 segundos
+                });
+            }, error => {
+                console.error('Error al subir el archivo', error);
+                Swal.fire({
+                  toast: true,
+                  position: 'top-end',
+                  icon: 'error',
+                  title: 'Error al subir el archivo',
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+              });
         }
     }
 
@@ -129,4 +153,11 @@ export class PatientsComponent implements OnInit {
         this.rhbService.setPatient(patient); 
         this.router.navigate(['/rhb']);
     }
+
+    filterCustomers() {
+        this.filteredPatients = this.patients.filter(patient =>
+          patient.siniestro.toLowerCase().includes(this.search.toLowerCase())
+        );
+        this.page = 1; // Resetear la página al filtrar
+      }
 }
