@@ -284,10 +284,9 @@ export class RehabilitationCommiteeComponent  implements OnInit{
   rhbUpdate() {
 
     this.rhbService.getRhbRecommendation(this.patientData.id).subscribe(obsData => {
-      if (obsData) {
+      if (obsData && Object.keys(obsData).length > 0) {
         this.patchObsForm(obsData);
-        console.log("Esto es de Recommendation" + obsData)
-        this.task = true
+        this.task = true;
       }
       if (obsData.task) {
         this.rhbTasks = obsData.task || [];
