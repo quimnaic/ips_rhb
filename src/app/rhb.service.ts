@@ -11,6 +11,8 @@ export class RhbService {
   noCitation = 'http://186.117.135.117:8700/ips/public/api/rhb/noCitation';
   citations = 'http://186.117.135.117:8700/ips/public/api/rhb/citation';
   pdfRecommendation = 'http://186.117.135.117:8700/ips/public/api/rhb/createRecommendation';
+  rhbTask = 'http://186.117.135.117:8700/ips/public/api/rhb/createTask';
+  rhbDeleteTask = 'http://186.117.135.117:8700/ips/public/api/rhb/deleteTask/';
   pdfRecommendationPdf = 'http://186.117.135.117:8700/ips/public/api/rhb/createRecommendationPdf/';
   rhb = 'http://186.117.135.117:8700/ips/public/api/rhb';
   citationPdf = 'http://186.117.135.117:8700/ips/public/api/rhb/citationPdf';
@@ -103,5 +105,13 @@ export class RhbService {
 
   createNoCitation(formData: any): Observable<any> {
     return this.http.post(this.noCitation, formData);
+  }
+
+  createTask(fromData: any): Observable<any> {
+    return this.http.post(this.rhbTask, fromData, { responseType: 'blob' });
+  }
+
+  deleteTask(id: any): Observable<any> {
+    return this.http.get(this.rhbDeleteTask + id);
   }
 }

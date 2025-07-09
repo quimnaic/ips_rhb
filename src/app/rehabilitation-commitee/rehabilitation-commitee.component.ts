@@ -8,12 +8,13 @@ import { PatientService } from '../patient.service';
 import { NoCitationComponent } from './no-citation/no-citation.component';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { TaskComponent } from './task/task.component';
 
 declare var $: any;
 
 @Component({
   selector: 'app-rehabilitation-commitee',
-  imports: [ReactiveFormsModule, CommonModule, AddActivitiesComponent, CitationComponent, NoCitationComponent],
+  imports: [ReactiveFormsModule, CommonModule, AddActivitiesComponent, CitationComponent, NoCitationComponent, TaskComponent],
   templateUrl: './rehabilitation-commitee.component.html',
   styleUrl: './rehabilitation-commitee.component.css'
 })
@@ -33,6 +34,9 @@ export class RehabilitationCommiteeComponent  implements OnInit{
   imagenes: { [key: string]: File } = {};
   isEditVoyMode: boolean = false;
   maritalStatuses: any[] = [];
+  selectedRecommendationId: any;
+  rhbTasks: any[] = [];
+  task : boolean = false;
 
   helpsList = [
     { name: 'Bastón', value: 'cane' },
@@ -279,31 +283,36 @@ export class RehabilitationCommiteeComponent  implements OnInit{
 
   rhbUpdate() {
 
-    this.rhbService.getCitation(this.patientData.id).subscribe(data => {
-      this.citations = data;
+    this.rhbService.getRhbRecommendation(this.patientData.id).subscribe(obsData => {
+      if (obsData) {
+        this.patchObsForm(obsData);
+        console.log("Esto es de Recommendation" + obsData)
+        this.task = true
+      }
+      if (obsData.task) {
+        this.rhbTasks = obsData.task || [];
+      }
+    });
 
-      this.rhbService.getRhb(this.patientData.id).subscribe(rhbData => {
-        if (rhbData && Object.keys(rhbData).length > 0) {
-          this.isEditMode = true;
-          this.rhbFormValue = rhbData;
-          this.rhbCode = rhbData.code;
-          this.patchRhbForm(rhbData);
-    
-          this.rhbService.getRhbRecommendation(this.patientData.id).subscribe(obsData => {
-            if (obsData) this.patchObsForm(obsData);
-          });
-    
-          this.rhbService.getRhbVoy(this.patientData.id).subscribe(voyData => {
-            if (voyData) this.patchVoyForm(voyData);
-          });
-    
-          this.actUpdate(rhbData.code);
-        } else {
-          this.isEditMode = false;
-        }
-      });
-    
-  });
+    this.rhbService.getRhbVoy(this.patientData.id).subscribe(voyData => {
+      if (voyData) this.patchVoyForm(voyData);
+    });
+
+    this.rhbService.getCitation(this.patientData.id).subscribe(data => {
+      this.citations = data;    
+    });
+
+    this.rhbService.getRhb(this.patientData.id).subscribe(rhbData => {
+      if (rhbData && Object.keys(rhbData).length > 0) {
+        this.isEditMode = true;
+        this.rhbFormValue = rhbData;
+        this.rhbCode = rhbData.code;
+        this.patchRhbForm(rhbData);
+        this.actUpdate(rhbData.code);
+      } else {
+        this.isEditMode = false;
+      }
+    });
   }
 
   patchRhbForm(data: any) {
@@ -331,6 +340,7 @@ export class RehabilitationCommiteeComponent  implements OnInit{
       return_to_work: data.return_to_work || '',
       concept: data.concept || ''
     });
+    this.selectedRecommendationId = data.id;
   }
   
   patchVoyForm(data: any) {
@@ -442,11 +452,16 @@ export class RehabilitationCommiteeComponent  implements OnInit{
       console.log(`Agregando imagen: ${this.imagenes[key].name}`);
       formData.append('imagenes[]', this.imagenes[key]); // Ojo con 'imagenes[]' si son múltiples archivos
     });
-    console.log(formData);
-    this.rhbService.getRecommendation(formData).subscribe((response: Blob) => {
-      const blob = new Blob([response], { type: 'application/pdf' });
-      const url = window.URL.createObjectURL(blob);
-      window.open(url);
+    this.rhbService.getRecommendation(formData).subscribe( resdata => {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',  // 🔥 Se muestra arriba a la derecha
+        icon: 'success',
+        title: 'Se actualizo correctamente las recomendaciones',
+        showConfirmButton: false,
+        timer: 3000  // ⏳ Se cierra automáticamente en 3 segundos
+      });
+      this.rhbUpdate();
     });
   }
 
@@ -530,7 +545,6 @@ export class RehabilitationCommiteeComponent  implements OnInit{
       ...this.actRhb[0],
       company
     }
-    console.log(data);
     this.rhbService.getRhbPdf(data).subscribe((response: Blob) => {
       const blob = new Blob([response], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
@@ -566,6 +580,32 @@ export class RehabilitationCommiteeComponent  implements OnInit{
 
   resetForm(){
     this.router.navigate(['/patients']);
+  }
+
+  addTask(): void {
+    this.patientData;
+    $('#taskModal').modal('show');
+  }
+
+  openImg(filePath: string): void {
+    const url = 'http://186.117.135.117:8700/ips/public/' + filePath;
+    window.open(url, '_blank');
+  }
+
+  deleteTask(id: any): void {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción eliminará la tarea permanentemente.',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.rhbService.deleteTask(id).subscribe(resdata => {
+          if(resdata) this.rhbUpdate();
+        });
+      }
+    });
   }
 
 }

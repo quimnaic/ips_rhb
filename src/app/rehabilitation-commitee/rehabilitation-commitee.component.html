@@ -397,7 +397,7 @@
                                         <input type="text" formControlName="concept" id="" class="form-control">
                                     </div>
                                 </div>
-                            </div>
+                            </div><!--
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -422,7 +422,7 @@
                                         <input type="file" (change)="onFileSelected($event, 'imagen3')"  class="form-control" accept="image/*">
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -431,6 +431,50 @@
                                     </div>
                                 </div>
                             </div>
+                            <ng-container *ngIf="task == true">
+                                <div class="row d-flex justify-content-start">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-sm btn-info" (click)="addTask()">
+                                                <i class="fas fa-plus"></i>&nbsp;Agregar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <th>Tareas</th>
+                                                    <th>Descripción</th>
+                                                    <th>Acciones</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let item of rhbTasks">
+                                                        <td style="text-align: center; vertical-align: middle;">
+                                                            <img 
+                                                            [src]="'http://186.117.135.117:8700/ips/public/' + item.file" 
+                                                            alt="Imagen" 
+                                                            width="80" 
+                                                            height="80" 
+                                                            style="object-fit: cover; border-radius: 4px; cursor: pointer;"
+                                                            (click)="openImg(item.file)"
+                                                            >
+                                                        </td>
+                                                        <td>{{ item.description }}</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-default" (click)="deleteTask(item.id)">
+                                                                <i class="fa fa-eraser"></i>
+                                                            </button>
+                                                        </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
                             <div class="row">
                                 <div class="col-sm-12 d-flex justify-content-end">
                                     <div class="form-group">
@@ -1143,5 +1187,6 @@
     </div>
 </div>
 <app-add-activities (updateParent)="actUpdate($event)"></app-add-activities>
+<app-task (updateMethod)="rhbUpdate()" [patientRecommendationId]="selectedRecommendationId"></app-task>
 <app-no-citation [citationId]="selectedCitationId" (updateMethod)="rhbUpdate()"></app-no-citation>
 <app-citation (updateMethod)="rhbUpdate()" [patient]="{first_name: patientData.first_name, last_name: patientData.last_name , phone: patientData.phone, document_number: patientData.document_number, id: patientData.id }"></app-citation>

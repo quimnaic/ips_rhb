@@ -1,0 +1,28 @@
+<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="citModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="rehabModalLabel">Agregar/Editar Registro</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+        </div>
+        <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="form-label">Imagen</label>
+                        <input type="file" class="form-control" formControlName="file" required (change)="onFileSelected($event)" >
+                    </div>
+                    <div class="col-sm-12">
+                        <label class="form-label">Descripción</label>
+                        <textarea class="form-control" formControlName="description" id="" cols="30" rows="10"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Guardar</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>

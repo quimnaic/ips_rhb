@@ -33,6 +33,7 @@ export class CitationComponent {
   }
 
   onSubmit() {
+    const company = localStorage.getItem('company');
     const formData = {
       day: this.citationForm.value.day,
       hour: this.citationForm.value.hour,
@@ -42,7 +43,8 @@ export class CitationComponent {
       first_name: this.patient.first_name,
       last_name: this.patient.last_name,
       phonePatient: this.patient.phone,
-      document_number: this.patient.document_number
+      document_number: this.patient.document_number,
+      company: company
     }
     this.rhbService.generatePdf(formData).subscribe((response: Blob) => {
       $('#citModal').modal('hide');
